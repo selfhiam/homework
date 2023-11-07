@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fetch</title>
+    <style>
+        h2{
+            text-align: center;
+            font-size: 50px;
+            text-decoration: underline;
+            text-shadow: 6px 2px 2px gray;
+        }
+
+        table {
+            width: 70%;
+            font-size: 20px;
+            border-collapse: collapse;
+            margin: 0 15%;
+        }
+
+        th{
+            text-align: center;
+            border: 1px solid black;
+            background-color: yellow;
+        }
+        
+        td{
+            text-align: center;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h2>fetch</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>count</th>
+                <th>timepoint</th>
+                <th>cloudcover</th>
+                <th>seeing</th>
+                <th>transparency</th>
+                <th>lifted_index</th>
+                <th>rh2m</th>
+                <th>temp2m</th>
+            </tr>
+        </thead>
+            <tbody id="data-table">
+        </tbody>
+    </table>
+    <script>
+        fetch('https://www.7timer.info/bin/astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0')
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            const dataTable = document.getElementById('data-table');
+            const datas = data.dataseries;
+            
+            for (let i = 0; i < datas.length; i++) {
+                const enter = datas[i];
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${i + 1}</td>
+                    <td>${enter.timepoint}</td>
+                    <td>${enter.cloudcover}</td>
+                    <td>${enter.seeing}</td>
+                    <td>${enter.transparency}</td>
+                    <td>${enter.lifted_index}</td>
+                    <td>${enter.rh2m}</td>
+                    <td>${enter.temp2m}</td>
+                `;
+                dataTable.appendChild(row);
+            }
+        });
+    </script>
+</body>
+</html>
